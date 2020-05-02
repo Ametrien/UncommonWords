@@ -6,7 +6,6 @@ lRus = ['один', 'два', 'три']
 for i in range(0, len(lEng)):
     lEng[i] = '' + lEng[i] + ''
     lRus[i] = lEng[i] + ' (' + lRus[i] + ')'
-    i += 1
 
 
 print(lRus)
