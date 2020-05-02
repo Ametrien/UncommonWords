@@ -34,7 +34,7 @@ lEng = [[k] for k, v in frequency.items() if v > 500]
 lEngStar = lEng.copy()
 allEnglishWords = list(frequency.keys())
 for i in range(0, len(lEngStar)):
-    lEngStar[i] = ', '.join(lEngStar[i]) + '***'
+    lEngStar[i] = ', '.join(lEngStar[i]) + '-*1**'
 
 
 def chunks(l, n):
@@ -51,8 +51,8 @@ lRusDouble = []
 
 for list in list_of_lists:
     json = lookup(list)
-    russianWords = ''.join(json["text"]) + '***'
-    lRusDouble += russianWords.split('***')
+    russianWords = ''.join(json["text"]) + '-*1**'
+    lRusDouble += russianWords.split('-*1**')
 
 lRus = []
 for string in lRusDouble:
