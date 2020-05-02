@@ -69,6 +69,5 @@ for i in range(0, len(lEng)):
     tog.encode('utf-8').strip()
     print(tog)
     print(tog, file=f)
-    i += 1
 
 f.close()
