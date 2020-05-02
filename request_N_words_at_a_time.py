@@ -1,24 +1,14 @@
 import requests
 import re
 import sys
-
-class Logger(object):
-    def __init__(self, filename="Default.log"):
-        self.terminal = sys.stdout
-        self.log = open(filename, "a")
-
-    def write(self, message):
-        self.terminal.write(message)
-        self.log.write(message)
-
-sys.stdout = Logger("words.txt")  # the file is stored in the project directory
-
+import logging
 
 # Yandex API
-KEY = 'yourYandexKey'
+KEY = 'yourYandexAPIkey'
 URL = "https://translate.yandex.net/api/v1.5/tr.json/translate"
 
-def translate_me(mytext):
+
+def lookup(mytext):
     params = {
         "key": KEY,
         "text": mytext,
@@ -28,7 +18,7 @@ def translate_me(mytext):
     return response.json()
 
 
-document_text = open('/Users/username/Desktop/text.txt', 'r')  # your source file with a book
+document_text = open('/Users/user/Desktop/text.txt', 'r')  # your source file with a book
 text_string = document_text.read().lower()
 match_pattern = re.findall(r'\b[a-z]{3,25}\b', text_string)
 
@@ -40,34 +30,47 @@ for word in match_pattern:
 
 frequency_list = frequency.keys()
 
-lEng = [[k] for k, v in frequency.items() if v > 900]
+lEng = [[k] for k, v in frequency.items() if v > 500]
+lEngStar = lEng.copy()
 allEnglishWords = list(frequency.keys())
+for i in range(0, len(lEngStar)):
+    lEngStar[i] = ', '.join(lEngStar[i]) + '***'
 
 
 def chunks(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
-print(len(lEng))
-list_of_lists = list(chunks(lEng, 30))
 
-s = ''
+# print(len(lEng))
+list_of_lists = list(chunks(lEngStar, 50))
+
+lRusDouble = []
+
+
 
 for list in list_of_lists:
-    json = translate_me(list)
-    russianWords = ' '.join(json["text"]) + ' '
-    s += russianWords
-    lRus = s.split()
+    json = lookup(list)
+    russianWords = ''.join(json["text"]) + '***'
+    lRusDouble += russianWords.split('***')
 
-# for j in range(0, len(lRus)):
-#     print(lRus[j]).encode('utf-8').strip()
+lRus = []
+for string in lRusDouble:
+    if string != "":
+        lRus.append(string)
+
+        
+
+f = open("output.txt", "a")
 
 for i in range(0, len(lEng)):
     # print(lEng[i])
     lEng[i] = '"' + ', '.join(lEng[i]) + '";'
-    lRus[i] = '"' + lRus[i] + '";'
-    tog = ''
-    tog = lEng[i] + lRus[i]
-    print(tog).encode('utf-8').strip()
+    lRus[i] = '"' + lRus[i] + '"'
+    tog = (lEng[i] + lRus[i])
+    tog.encode('utf-8').strip()
+    print(tog)
+    print(tog, file=f)
     i += 1
 
+f.close()
