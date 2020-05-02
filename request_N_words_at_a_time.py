@@ -1,7 +1,5 @@
 import requests
 import re
-import sys
-import logging
 
 # Yandex API
 KEY = 'yourYandexAPIkey'
