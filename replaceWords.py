@@ -3,8 +3,6 @@ import re
 lEng = ['one', 'two', 'three']
 lRus = ['один', 'два', 'три']
 
-lUnited = []
-
 for i in range(0, len(lEng)):
     lEng[i] = '' + lEng[i] + ''
     lRus[i] = lEng[i] + ' (' + lRus[i] + ')'
