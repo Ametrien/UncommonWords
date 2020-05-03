@@ -1,5 +1,6 @@
 import requests
 import re
+import csv
 
 # Yandex API
 KEY = 'key'
@@ -102,31 +103,67 @@ def replace_words(text, word_dic):
 # updates the book
 def updateBook(path, eng, rus):
 
+    lRusEng = rus.copy()
+
     for i in range(0, len(eng)):
         eng[i] = ' '.join(eng[i]) + ' '
-        rus[i] = eng[i] + '(' + lRus[i] + ') '
+        lRusEng[i] = eng[i] + '(' + lRusEng[i] + ') '
 
-    word_list = dict(zip(eng, rus))
+    word_list = dict(zip(eng, lRusEng))
 
     fin = open(path, "r")
     str2 = fin.read()
     fin.close()
+
     str3 = replace_words(str2, word_list)
     fout = open("updatedBook.txt", "w")
     fout.write(str3)
     fout.close()
 
+def to_csv(eng, rus, filename):
+    with open(filename, 'w') as f:
+        writer = csv.writer(f)
+        writer.writerows(zip(eng, rus))
+
+
+def row_from_csv(read, n):
+    with open(read, 'r') as f:
+        reader = csv.reader(f)
+        i = 0
+        lang = []
+        for row in reader:
+            lang.append(row[n])  # do not forget to start with 0
+            i += 1
+        # print(lang)
+        return lang
+
+
+def from_csv(read, eng, rus):
+    eng = row_from_csv(read, 0)
+    rus = row_from_csv(read, 1)
+    # print(eng)
+    # print(rus)
+    return eng, rus
+
+
+def assign():
+    lEng2 = []
+    lRus2 = []
+
+    eng, rus = from_csv(csv1, lEng2, lRus2)
+    lEng2.extend(eng)
+    lRus2.extend(rus)
+    print(lEng2)
+    print(lRus2)
 
 bookPath = 'book.txt'
+csv1 = 'some.csv'
+csv2 = 'some2.csv'
 
 allWords = textExctractor(bookPath)
 lEng = frequent(allWords, 900)
 lRus = request(lEng)
-# flashCards(lEng, lRus)
+flashCards(lEng, lRus)
 updateBook(bookPath, lEng, lRus)
-
-
-
-
-
-
+to_csv(lEng, lRus, csv1)
+assign()
