@@ -17,7 +17,7 @@ def lookup(mytext):
 
 
 # read the words of your book
-def booktotxt(path):
+def textExctractor(path):
     document_text = open(path, 'r')  # your source file with a book
     text_string = document_text.read().lower()
     pat = re.findall(r'\b[a-z]{3,25}\b', text_string)
@@ -53,8 +53,13 @@ def chunks(text, n):
     for q in range(0, len(text), n):
         yield text[q:q + n]
 
+
 # go to Yandex to translate words
-def request(lists):
+def request(eng):
+
+    engStar = addStars(eng)
+    lists = chunks(engStar, 100)
+
     lRusDouble = []
     for list in lists:
         json = lookup(list)
@@ -112,16 +117,13 @@ def updateBook(path, eng, rus):
     fout.close()
 
 
-bookpath = 'book.txt'
+bookPath = 'book.txt'
 
-pattern = booktotxt(bookpath)
-lEng = frequent(pattern, 900)
-lEngStar = addStars(lEng)
-print(len(lEng))
-list_of_lists = list(chunks(lEngStar, 100))
-lRus = request(list_of_lists)
-flashCards(lEng, lRus)
-updateBook(bookpath, lEng, lRus)
+allWords = textExctractor(bookPath)
+lEng = frequent(allWords, 900)
+lRus = request(lEng)
+# flashCards(lEng, lRus)
+updateBook(bookPath, lEng, lRus)
 
 
 
