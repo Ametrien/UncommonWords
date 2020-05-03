@@ -7,6 +7,11 @@ KEY = 'key'
 URL = "https://translate.yandex.net/api/v1.5/tr.json/translate"
 
 
+bookPath = 'book.txt'
+csv1 = 'some.csv'
+csv2 = 'some2.csv'
+
+
 def lookup(mytext):
     params = {
         "key": KEY,
@@ -165,11 +170,6 @@ def assign():
     print(lRus2)
 
 
-bookPath = 'book.txt'
-csv1 = 'some.csv'
-csv2 = 'some2.csv'
-
-
 def requestAndRun():
     allWords = textExctractorLower(bookPath)
     lEng = frequent(allWords, 6)
@@ -179,6 +179,7 @@ def requestAndRun():
     to_csv(lEng, lRus, csv1)
     assign()
 
+    
 def csvAndRun():
     lEng = []
     lRus = []
@@ -186,6 +187,7 @@ def csvAndRun():
     assign()
     updateBook('book.txt', lEng, lRus)
 
+    
 requestAndRun()
 
 
