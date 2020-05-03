@@ -18,7 +18,7 @@ def lookup(mytext):
 
 
 # read the words of your book
-def textExctractor(path):
+def textExctractorLower(path):
     document_text = open(path, 'r')  # your source file with a book
     text_string = document_text.read().lower()
     pat = re.findall(r'\b[a-z]{3,25}\b', text_string)
@@ -34,18 +34,24 @@ def frequent(pat, n):
         count = frequency.get(word, 0)
         frequency[word] = count + 1
     if n > 10:
-        lEng = [[k] for k, v in frequency.items() if v > n]
+        eng = [[k] for k, v in frequency.items() if v > n]
     else:
-        lEng = [[k] for k, v in frequency.items() if v < n]
+        eng = [[k] for k, v in frequency.items() if v < n]
+
+    flat = []
+    for sublist in eng:
+        for item in sublist:
+            flat.append(item)
     # allEnglishWords = list(frequency.keys())
-    return lEng
+
+    return flat
 
 
 # add stars to the English text
-def addStars(lEng):
-    lEngStar = lEng.copy()
-    for i in range(0, len(lEngStar)):
-        lEngStar[i] = ', '.join(lEngStar[i]) + ' -*1**'
+def addStars(eng):
+    lEngStar = eng.copy()
+    lEngStar = [s + ' -*1**' for s in lEngStar]
+
     return lEngStar
 
 
@@ -103,13 +109,14 @@ def replace_words(text, word_dic):
 # updates the book
 def updateBook(path, eng, rus):
 
-    lRusEng = rus.copy()
+    lRus4list = rus.copy()
+    lEng4list = eng.copy()
 
     for i in range(0, len(eng)):
-        eng[i] = ' '.join(eng[i]) + ' '
-        lRusEng[i] = eng[i] + '(' + lRusEng[i] + ') '
+        lEng4list[i] = ''.join(eng[i]) + ' '
+        lRus4list[i] = lEng4list[i] + '(' + lRus4list[i] + ') '
 
-    word_list = dict(zip(eng, lRusEng))
+    word_list = dict(zip(lEng4list, lRus4list))
 
     fin = open(path, "r")
     str2 = fin.read()
@@ -156,14 +163,18 @@ def assign():
     print(lEng2)
     print(lRus2)
 
+
 bookPath = 'book.txt'
 csv1 = 'some.csv'
 csv2 = 'some2.csv'
 
-allWords = textExctractor(bookPath)
+
+allWords = textExctractorLower(bookPath)
 lEng = frequent(allWords, 900)
 lRus = request(lEng)
 flashCards(lEng, lRus)
 updateBook(bookPath, lEng, lRus)
 to_csv(lEng, lRus, csv1)
 assign()
+
+
