@@ -33,7 +33,7 @@ def frequent(pat, n):
     for word in pat:
         count = frequency.get(word, 0)
         frequency[word] = count + 1
-    if n > 10:
+    if n > 25:
         eng = [[k] for k, v in frequency.items() if v > n]
     else:
         eng = [[k] for k, v in frequency.items() if v < n]
@@ -84,7 +84,7 @@ def request(eng):
 def flashCards(eng, rus):
     f = open("flashcards.txt", "a")
 
-    for i in range(0, len(lEng)):
+    for i in range(0, len(eng)):
         lEngCards = eng.copy()
         lRusCards = rus.copy()
         lEngCards = ['"' + s + '";' for s in lEngCards]
@@ -170,12 +170,23 @@ csv1 = 'some.csv'
 csv2 = 'some2.csv'
 
 
-allWords = textExctractorLower(bookPath)
-lEng = frequent(allWords, 900)
-lRus = request(lEng)
-flashCards(lEng, lRus)
-updateBook(bookPath, lEng, lRus)
-to_csv(lEng, lRus, csv1)
-assign()
+def requestAndRun():
+
+    allWords = textExctractorLower(bookPath)
+    lEng = frequent(allWords, 6)
+    lRus = request(lEng)
+    flashCards(lEng, lRus)
+    updateBook(bookPath, lEng, lRus)
+    to_csv(lEng, lRus, csv1)
+    assign()
+
+def csvAndRun():
+    lEng = []
+    lRus = []
+    from_csv('edited.csv', lEng, lRus)
+    assign()
+    updateBook('book.txt', lEng, lRus)
+
+requestAndRun()
 
 
