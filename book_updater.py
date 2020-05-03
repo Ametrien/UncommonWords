@@ -87,8 +87,9 @@ def flashCards(eng, rus):
     for i in range(0, len(lEng)):
         lEngCards = eng.copy()
         lRusCards = rus.copy()
-        lEngCards[i] = '"' + ', '.join(lEngCards[i]) + '";'
-        lRusCards[i] = '"' + lRusCards[i] + '"'
+        lEngCards = ['"' + s + '";' for s in lEngCards]
+        # lEngCards[i] = '"' + ', '.join(lEngCards[i]) + '";'
+        lRusCards = ['"' + s + '"' for s in lRusCards]
         tog = (lEngCards[i] + lRusCards[i])
         tog.encode('utf-8').strip()
         # print(tog)
