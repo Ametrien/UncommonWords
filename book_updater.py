@@ -50,7 +50,7 @@ def frequent(pat, n):
 # add stars to the English text
 def addStars(eng):
     lEngStar = eng.copy()
-    lEngStar = [s + ' -*1**' for s in lEngStar]
+    lEngStar = [s + '-*1**' for s in lEngStar]
 
     return lEngStar
 
@@ -70,8 +70,8 @@ def request(eng):
     lRusDouble = []
     for list in lists:
         json = lookup(list)
-        russianWords = ''.join(json["text"]) + ' -*1**'
-        lRusDouble += russianWords.split(' -*1**')
+        russianWords = ''.join(json["text"]) + '-*1**'
+        lRusDouble += russianWords.split('-*1**')
 
         lRus = []
         for string in lRusDouble:
