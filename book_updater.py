@@ -171,7 +171,6 @@ csv2 = 'some2.csv'
 
 
 def requestAndRun():
-
     allWords = textExctractorLower(bookPath)
     lEng = frequent(allWords, 6)
     lRus = request(lEng)
